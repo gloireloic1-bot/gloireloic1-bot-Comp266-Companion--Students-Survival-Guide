@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <title>COMP 266 Companion – A Student Survival Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!--
+    Base from Units 2–4:
+    - Structure, header/nav/footer, responsive layout, and theme toggle.
+
+    Unit 5 additions in <main>:
+    - Guided Checklist Navigator
+    - Resource Finder (+ Reset filters)
+    - Smart Contact Form Assistant (autosave + validation)
+
+    Unit 6 additions (jQuery; see scripts at bottom):
+    - Checklist progress bar + "Hide completed"
+    - Back-to-top button
+    - Resource count + copy-link buttons
+    - Toast notification
+
+    Unit 7 additions (external services):
+    - Web Share API button
+    - Opt-in Hypothes.is annotations
+    - Lazy-loaded Giscus comments
+    - Formspree POST hook
+  -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+<header role="banner">
+  <div class="container">
+    <h1>COMP 266 Companion — A Student Survival Guide</h1>
+
+    <nav aria-label="Site">
+  <ul class="nav">
+    <li><a href="#intro">Home</a></li>
+    <li><a href="#resources-section">Resources</a></li>
+    <li><a href="#contact-section">Contact</a></li>
+  </ul>
+</nav>
+
+
+    <!-- Unit 4: Theme toggle control -->
+    <button id="toggle-theme"
+            class="theme-toggle"
+            type="button"
+            aria-pressed="false"
+            aria-live="polite"
+            data-theme-toggle>
+      🌙 Dark mode
+    </button>
+
+    <!-- Unit 7: Native share -->
+    <button id="share-btn" class="theme-toggle" type="button" aria-label="Share this page">
+      🔗 Share
+    </button>
+
+    <!-- Credits note (kept as a comment so it’s not visible):
+         Theme toggle adapted from MDN Web Docs code samples (CC0).
+         See comments in js/theme-toggle.js for attribution. -->
+  </div>
+</header>
+
+  <!-- =========================
+       MAIN CONTENT (Unit 5)
+       ========================= -->
+  <main id="main" class="container">
+
+    <!-- Intro -->
+    <section aria-labelledby="intro">
+      <h2 id="intro">Welcome</h2>
+      <p>
+        This website helps COMP 266 students quickly digest key concepts, find trustworthy resources,
+        and keep moving through the course with confidence. Whether you’re starting fresh or
+        revisiting a topic, we hope you find it clear, accessible, and genuinely useful.
+      </p>
+      <figure class="hero">
+        <img src="images/A student reviewing HTML structure on a laptop.jpg" alt="A student reviewing HTML structure on a laptop" />
+        <figcaption>A simple hero image with descriptive alternative text.</figcaption>
+      </figure>
+    </section>
+
+    <!-- NEW: Guided Checklist Navigator (Unit 5) -->
+    <section id="checklist-section" aria-labelledby="checklist-h2">
+      <h2 id="checklist-h2">Your Guided Checklist</h2>
+
+      <div class="toolbar">
+        <label for="checklist-search" class="visually-hidden">Search steps</label>
+        <input id="checklist-search" type="search" placeholder="Search steps (e.g., 'validation', 'diary')" />
+        <button id="checklist-reset" type="button" class="secondary">Reset filters</button>
+      </div>
+
+      <div id="checklist-app" class="cards" aria-live="polite"></div>
+    </section>
+
+    <!-- Course milestones table (Units 1–7 + Portfolio) with collapsible tasks -->
+    <section id="schedule" aria-labelledby="schedule">
+      <h2 id="schedule">Course Milestones (Table)</h2>
+      <p>Tables should present data with clear headers and captions, never for layout.</p>
+      <div class="table-wrap">
+        <table>
+          <caption>Planned Milestones</caption>
+          <thead>
+            <tr>
+              <th scope="col">Unit</th>
+              <th scope="col">Focus</th>
+              <th scope="col">Key Deliverable</th>
+              <th scope="col">Tasks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Unit 1 -->
+            <tr>
+              <th scope="row">Unit 1</th>
+              <td>Personas &amp; Scenarios</td>
+              <td>Design rationale</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Draft personas and scenarios</li>
+                    <li>Write Unit 1 reflective diary</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+
+            <!-- Unit 2 -->
+            <tr>
+              <th scope="row">Unit 2</th>
+              <td>HTML Site Building</td>
+              <td>Cleaned samples + new page</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Refactor sample1/2 into valid HTML</li>
+                    <li>Create 3rd page; interlink pages</li>
+                    <li>Add image with alt text + external link</li>
+                    <li>Use headings + at least one list</li>
+                    <li>Add data table + a form</li>
+                    <li>Use div/span with IDs or classes</li>
+                    <li>Show author + last modified</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+
+            <!-- Unit 3 -->
+            <tr>
+              <th scope="row">Unit 3</th>
+              <td>CSS Styling</td>
+              <td>External stylesheet &amp; responsive layout</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Move all styles to external CSS</li>
+                    <li>Improve readability: type, spacing, contrast</li>
+                    <li>Responsive layout for mobile → desktop</li>
+                    <li>Style nav + skip link; test in browsers</li>
+                    <li>Comment &amp; organize CSS</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+
+            <!-- Unit 4 -->
+            <tr>
+              <th scope="row">Unit 4</th>
+              <td>Script Use &amp; Augmentation</td>
+              <td>Integrated third-party JS + critique</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Pick small, relevant third-party JS (license OK)</li>
+                    <li>Attribute source and critique quality</li>
+                    <li>Explain fit with personas/scenarios</li>
+                    <li>Modify/extend code to suit site</li>
+                    <li>Keep progressive enhancement</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+
+            <!-- Unit 5 -->
+            <tr>
+              <th scope="row">Unit 5</th>
+              <td>Writing JavaScript</td>
+              <td>Original JS project with design + diary</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Post 3 JS ideas; await tutor feedback</li>
+                    <li>Design first: data, functions, flow</li>
+                    <li>Implement ~200–300 lines (arrays, functions, classes, events)</li>
+                    <li>Add error handling + thorough comments</li>
+                    <li>Reflect in diary; upload ZIP snapshot</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+
+            <!-- Unit 6 -->
+            <tr>
+              <th scope="row">Unit 6</th>
+              <td>jQuery Enhancements</td>
+              <td>Progress bar, hide-completed, UI polish</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Add local jQuery; plan ≥6 enhancements</li>
+                    <li>Submit jQuery proposal for tutor review</li>
+                    <li>Implement UI features (tabs, back-to-top, etc.)</li>
+                    <li>Ensure accessibility (ARIA, keyboard, focus)</li>
+                    <li>Attribute any plugins</li>
+                    <li>Reflect in diary; attach ZIP snapshot</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+
+            <!-- Unit 7 -->
+            <tr>
+              <th scope="row">Unit 7</th>
+              <td>External Services</td>
+              <td>Formspree, Hypothes.is, Giscus, Web Share</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Pick 2–10 external services that help personas</li>
+                    <li>Submit proposal for tutor feedback</li>
+                    <li>Integrate via API/AJAX with post-processing</li>
+                    <li>Handle failures gracefully (offline, blocked)</li>
+                    <li>Protect keys; follow ToS/privacy rules</li>
+                    <li>Reflect in diary; attach ZIP snapshot</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+
+            <!-- Portfolio -->
+            <tr>
+              <th scope="row">Portfolio</th>
+              <td>Packaging &amp; Submission</td>
+              <td>Final zip, a11y pass, release notes</td>
+              <td>
+                <details>
+                  <summary>View tasks</summary>
+                  <ul>
+                    <li>Zip entire website (tree + code)</li>
+                    <li>Export reflective diary as single PDF</li>
+                    <li>Compile supporting evidence as PDF</li>
+                    <li>Complete learning outcomes mapping file</li>
+                    <li>Verify attribution/licensing of all assets</li>
+                    <li>Final accessibility &amp; cross-browser sweep</li>
+                    <li>Upload single archive; ensure site is live</li>
+                  </ul>
+                </details>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- NEW: Resource Finder (Unit 5) -->
+    <section id="resources-section" aria-labelledby="resources-h2">
+      <h2 id="resources-h2">Resource Finder</h2>
+
+      <div class="toolbar">
+        <label for="resource-search" class="visually-hidden">Search resources</label>
+        <input id="resource-search" type="search" placeholder="Find resources (e.g., 'forms', 'WCAG')" />
+
+        <!-- NEW: reset filters -->
+        <button id="resource-reset" type="button" class="secondary">Reset filters</button>
+
+        <div id="tag-chips" class="chips" aria-label="Filter by tag"></div>
+      </div>
+
+      <!-- NEW (Unit 7 hooks): resource count line -->
+      <p id="resource-meta" class="small">Showing <span id="resource-count">0</span> resources</p>
+
+      <ul id="resource-list" class="resource-list"></ul>
+    </section>
+
+    <!-- NEW/UPGRADED: Smart Contact Form Assistant (Unit 5) -->
+    <section id="contact-section" aria-labelledby="contact-h2">
+      <h2 id="contact-h2">Contact</h2>
+
+      <!-- Keep mailto as ultimate fallback; add Formspree hook for JS -->
+      <form id="contact-form"
+            action="mailto:YOUR_EMAIL_HERE"
+            method="post"
+            enctype="text/plain"
+            novalidate
+            data-formspree="https://formspree.io/f/xqadbeow">
+        <fieldset>
+          <legend>Send Feedback</legend>
+
+          <p class="field">
+            <label for="name">Your Name (required)</label>
+            <input type="text" id="name" name="name" required />
+          </p>
+
+          <p class="field">
+            <label for="email">Your Email (required)</label>
+            <input type="email" id="email" name="email" required />
+          </p>
+
+          <p class="field">
+            <label for="topic">Topic</label>
+<select id="topic" name="topic">
+  <option value="unit1">Unit 1 Personas/Scenarios</option>
+  <option value="unit2" selected>Unit 2 HTML</option>
+  <option value="unit3">Unit 3 CSS</option>
+  <option value="unit4">Unit 4 JS Augmentation</option>
+  <option value="unit5">Unit 5 JS Coding</option>
+  <option value="unit6">Unit 6 jQuery Enhancements</option>
+  <option value="unit7">Unit 7 External Services</option>
+  <option value="portfolio">Portfolio & Submission</option>
+</select>
+
+          </p>
+
+          <p class="field">
+            <label for="message">Message
+              <span id="char-count" class="small">0/300 characters</span>
+            </label>
+            <textarea id="message" name="message" rows="6" maxlength="300" placeholder="Type something…"></textarea>
+          </p>
+
+          <!-- Live region for validation messages -->
+          <div id="form-errors" class="sr-status" aria-live="polite"></div>
+
+          <p class="buttons">
+            <button type="submit">Send</button>
+            <button type="reset" class="secondary" id="clear-draft">Clear draft</button>
+          </p>
+        </fieldset>
+      </form>
+    </section>
+
+    <!-- NEW: External services area (Unit 7) -->
+    <section id="external-section" aria-labelledby="external-h2">
+      <h2 id="external-h2">Discussion & Annotations</h2>
+      <p class="small muted">Load these only if you want them (privacy-friendly opt-in).</p>
+
+      <p class="buttons">
+        <!-- Giscus: ready with your repo IDs -->
+        <button id="load-comments"
+                class="secondary"
+                type="button"
+                aria-controls="giscus-thread"
+                data-repo="gloireloic1-bot/gloireloic-comp266-companion"
+                data-repo-id="R_kgDOPnQMGQ"
+                data-category="General"
+                data-category-id="DIC_kwDOPnQMGc4Cuy3S"
+                data-mapping="pathname"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="top"
+                data-theme="preferred_color_scheme"
+                data-lang="en">
+          Load comments
+        </button>
+
+        <button id="enable-hypothesis" class="secondary" type="button">
+          Enable annotations
+        </button>
+      </p>
+
+      <div id="giscus-thread" class="card" aria-live="polite"></div>
+    </section>
+
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container">
+      <p>Author: <span class="vcard">Gloire Loic Nzoussi</span></p>
+      <p>Last modified: <time datetime="2025-08-17">August 17, 2025</time></p>
+    </div>
+  </footer>
+
+  <!-- =========================
+       Scripts
+       ========================= -->
+
+  <!-- Theme toggle (Unit 4) -->
+  <script src="js/theme-toggle.js" defer></script>
+
+  <!-- jQuery (Unit 6). Prefer local copy; name as you saved it. -->
+  <script src="js/jquery-3.7.1.min.js" defer></script>
+
+  <!-- Unit 6 + 7: jQuery enhancements (progress bar, hide-completed, back-to-top, toasts, resource count, copy-link, share, Hypothes.is, Giscus, Formspree) -->
+  <script src="js/main-jq.js" defer></script>
+
+  <!-- Unit 5 modules (import utils.js internally) -->
+  <script type="module" src="js/checklist.js"></script>
+  <script type="module" src="js/resources.js"></script>
+  <script type="module" src="js/form-assistant.js"></script>
+</body>
+</html>
+
+
